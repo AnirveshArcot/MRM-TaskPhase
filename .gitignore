@@ -1,2 +1,10 @@
 NeuralNetworks/Fashion-Mnist/fashion-mnist_train.csv
 NeuralNetworks/Fashion-Mnist/fashion-mnist_test.csv
+
+Titanic-Logistic-SVM/titanic.csv
+
+CountryClassification/data-dictionary.csv
+CountryClassification/Country-data.csv
+
+CarPrices/Data Dictionary - carprices.xlsx
+CarPrices/data.csv
