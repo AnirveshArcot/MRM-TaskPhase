@@ -67,7 +67,7 @@ adamNetwork = Net()
 adam_optimizer = optim.Adam(adamNetwork.parameters(), lr=learning_rate_adam)
 sgd_optimizer = optim.SGD(sgdNetwork.parameters(), lr=learning_rate_sgd,momentum=momentum)
 
-def train(epoch,network,optimizer,name):
+def train(epoch,network,optimizer,max_acc,name):
     train_losses=[]
     train_counter=[]
     network.train()
@@ -81,54 +81,52 @@ def train(epoch,network,optimizer,name):
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.item()))
-            train_losses.append(loss.item())
-            train_counter.append(
-                (batch_idx*64) + ((epoch-1)*len(train_loader.dataset)))
-            torch.save(network.state_dict(), './results/{}model.pth'.format(name))
-            torch.save(optimizer.state_dict(), './results/{}optimizer.pth'.format(name))
-    torch.save(network.state_dict(), './results/{}model.pth'.format(name))
-    torch.save(optimizer.state_dict(), './results/{}optimizer.pth'.format(name))
-    return train_losses,train_counter
+        train_losses.append(loss.item())
+        train_counter.append(
+            (batch_idx*64) + ((epoch-1)*len(train_loader.dataset)))
+    accuracy=val_acc(network,val_loader)
+    if max_acc<accuracy:
+        torch.save(network.state_dict(), './results/{}model.pth'.format(name))
+        torch.save(optimizer.state_dict(), './results/{}optimizer.pth'.format(name))
+        max_acc=accuracy
+    return train_losses,train_counter,max_acc
 
 
-
-
-def validate(network,loader):
+def val_acc(network,loader):
   network.eval()
-  test_loss = 0
   correct = 0
   with torch.no_grad():
     for data, target in loader:
       output = network(data)
-      test_loss += F.nll_loss(output, target, size_average=False).item()
       pred = output.data.max(1, keepdim=True)[1]
       correct += pred.eq(target.data.view_as(pred)).sum()
-  test_loss /= len(loader.dataset)
-  print('Val set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-    test_loss, correct, len(loader.dataset),
-    100. * correct / len(loader.dataset)))
+  return (100. * correct / len(loader.dataset))
 
 
 adam_counter=[]
 adam_losses=[]
+max_acc=0
 for epoch in range(1, n_epochs + 1):
-    losses,counter=train(epoch,adamNetwork,adam_optimizer,name="adam")
+    losses,counter,acc=train(epoch,adamNetwork,adam_optimizer,max_acc,name="adam")
     adam_counter+=losses
     adam_losses+=counter
+    max_acc=acc
 
 
 sgd_counter=[]
 sgd_losses=[]
+max_acc=0
 for epoch in range(1, n_epochs + 1):
-    losses,counter=train(epoch,sgdNetwork,sgd_optimizer,name="sgd")
+    losses,counter,acc=train(epoch,sgdNetwork,sgd_optimizer,max_acc,name="sgd")
     sgd_counter+=losses
     sgd_losses+=counter
+    max_acc=acc
     
 
 print("Validation Set Details for ADAM")
-validate(adamNetwork,val_loader)
+print("Accuracy : {}".format(val_acc(adamNetwork,val_loader)))
 print("Validation Set Details for SGD")
-validate(sgdNetwork,val_loader)
+print("Accuracy : {}".format(val_acc(sgdNetwork,val_loader)))
 
 
 fig = plt.figure()
