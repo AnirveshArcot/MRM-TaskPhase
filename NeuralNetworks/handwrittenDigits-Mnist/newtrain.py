@@ -8,7 +8,7 @@ import warnings
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-n_epochs = 1
+n_epochs = 5
 batch_size_train = 64
 learning_rate_adam = 0.01
 learning_rate_sgd = 0.01
@@ -80,15 +80,17 @@ def train(epoch,network,optimizer,max_acc,name):
         if batch_idx % log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item())) 
+                100. * batch_idx / len(train_loader), loss.item()))
         train_losses.append(loss.item())
-        train_counter.append(batch_idx)       
+        train_counter.append(
+            (batch_idx*64) + ((epoch-1)*len(train_loader.dataset)))
     accuracy=val_acc(network,val_loader)
     if max_acc<accuracy:
         torch.save(network.state_dict(), './results/{}model.pth'.format(name))
         torch.save(optimizer.state_dict(), './results/{}optimizer.pth'.format(name))
         max_acc=accuracy
     return train_losses,train_counter,max_acc
+
 
 def val_acc(network,loader):
   network.eval()
@@ -105,9 +107,9 @@ adam_counter=[]
 adam_losses=[]
 max_acc=0
 for epoch in range(1, n_epochs + 1):
-    losses,counter,acc=train(epoch,adamNetwork,adam_optimizer,max_acc=max_acc,name="adam",)
-    adam_counter+=counter
-    adam_losses+=losses
+    losses,counter,acc=train(epoch,adamNetwork,adam_optimizer,max_acc,name="adam")
+    adam_counter+=losses
+    adam_losses+=counter
     max_acc=acc
 
 
@@ -115,9 +117,9 @@ sgd_counter=[]
 sgd_losses=[]
 max_acc=0
 for epoch in range(1, n_epochs + 1):
-    losses,counter,acc=train(epoch,sgdNetwork,sgd_optimizer,max_acc=max_acc,name="sgd",)
-    sgd_counter+=counter
-    sgd_losses+=losses
+    losses,counter,acc=train(epoch,sgdNetwork,sgd_optimizer,max_acc,name="sgd")
+    sgd_counter+=losses
+    sgd_losses+=counter
     max_acc=acc
     
 
@@ -126,10 +128,11 @@ print("Accuracy : {}".format(val_acc(adamNetwork,val_loader)))
 print("Validation Set Details for SGD")
 print("Accuracy : {}".format(val_acc(sgdNetwork,val_loader)))
 
+
 fig = plt.figure()
-plt.plot(adam_counter, adam_losses, color='blue')
-plt.plot(sgd_counter, sgd_losses, color='orange')
+plt.plot(adam_losses, adam_counter, color='blue')
+plt.plot(sgd_losses, sgd_counter, color='orange')
 plt.legend(['Adam Loss', 'SGD Loss'], loc='upper right')
-plt.xlabel('Number of Batches')
+plt.xlabel('Number of Samples')
 plt.ylabel('negative log likelihood loss')
 plt.show()

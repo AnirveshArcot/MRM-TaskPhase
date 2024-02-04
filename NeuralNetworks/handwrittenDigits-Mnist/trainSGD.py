@@ -8,12 +8,13 @@ import warnings
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-n_epochs = 1
+n_epochs = 10
 batch_size_train = 64
 learning_rate_adam = 0.01
 learning_rate_sgd = 0.01
 momentum = 0.5
 log_interval = 10
+
 
 random_seed = 1
 torch.backends.cudnn.enabled = False
@@ -63,8 +64,6 @@ plt.show()
 
 
 sgdNetwork = Net()
-adamNetwork = Net()
-adam_optimizer = optim.Adam(adamNetwork.parameters(), lr=learning_rate_adam)
 sgd_optimizer = optim.SGD(sgdNetwork.parameters(), lr=learning_rate_sgd,momentum=momentum)
 
 def train(epoch,network,optimizer,max_acc,name):
@@ -101,16 +100,6 @@ def val_acc(network,loader):
   return (100. * correct / len(loader.dataset))
 
 
-adam_counter=[]
-adam_losses=[]
-max_acc=0
-for epoch in range(1, n_epochs + 1):
-    losses,counter,acc=train(epoch,adamNetwork,adam_optimizer,max_acc=max_acc,name="adam",)
-    adam_counter+=counter
-    adam_losses+=losses
-    max_acc=acc
-
-
 sgd_counter=[]
 sgd_losses=[]
 max_acc=0
@@ -119,15 +108,11 @@ for epoch in range(1, n_epochs + 1):
     sgd_counter+=counter
     sgd_losses+=losses
     max_acc=acc
-    
 
-print("Validation Set Details for ADAM")
-print("Accuracy : {}".format(val_acc(adamNetwork,val_loader)))
 print("Validation Set Details for SGD")
 print("Accuracy : {}".format(val_acc(sgdNetwork,val_loader)))
 
 fig = plt.figure()
-plt.plot(adam_counter, adam_losses, color='blue')
 plt.plot(sgd_counter, sgd_losses, color='orange')
 plt.legend(['Adam Loss', 'SGD Loss'], loc='upper right')
 plt.xlabel('Number of Batches')
