@@ -80,9 +80,16 @@ def train(epoch,network,optimizer,max_acc,name):
         if batch_idx % log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
+<<<<<<< HEAD
                 100. * batch_idx / len(train_loader), loss.item())) 
         train_losses.append(loss.item())
         train_counter.append(batch_idx)       
+=======
+                100. * batch_idx / len(train_loader), loss.item()))
+        train_losses.append(loss.item())
+        train_counter.append(
+            (batch_idx*64) + ((epoch-1)*len(train_loader.dataset)))
+>>>>>>> 61aa876edf9930cb203d35d4796eb030a1798a81
     accuracy=val_acc(network,val_loader)
     if max_acc<accuracy:
         torch.save(network.state_dict(), './results/{}model.pth'.format(name))
@@ -90,6 +97,10 @@ def train(epoch,network,optimizer,max_acc,name):
         max_acc=accuracy
     return train_losses,train_counter,max_acc
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61aa876edf9930cb203d35d4796eb030a1798a81
 def val_acc(network,loader):
   network.eval()
   correct = 0
@@ -105,9 +116,15 @@ adam_counter=[]
 adam_losses=[]
 max_acc=0
 for epoch in range(1, n_epochs + 1):
+<<<<<<< HEAD
     losses,counter,acc=train(epoch,adamNetwork,adam_optimizer,max_acc=max_acc,name="adam",)
     adam_counter+=counter
     adam_losses+=losses
+=======
+    losses,counter,acc=train(epoch,adamNetwork,adam_optimizer,max_acc,name="adam")
+    adam_counter+=losses
+    adam_losses+=counter
+>>>>>>> 61aa876edf9930cb203d35d4796eb030a1798a81
     max_acc=acc
 
 
@@ -115,9 +132,15 @@ sgd_counter=[]
 sgd_losses=[]
 max_acc=0
 for epoch in range(1, n_epochs + 1):
+<<<<<<< HEAD
     losses,counter,acc=train(epoch,sgdNetwork,sgd_optimizer,max_acc=max_acc,name="sgd",)
     sgd_counter+=counter
     sgd_losses+=losses
+=======
+    losses,counter,acc=train(epoch,sgdNetwork,sgd_optimizer,max_acc,name="sgd")
+    sgd_counter+=losses
+    sgd_losses+=counter
+>>>>>>> 61aa876edf9930cb203d35d4796eb030a1798a81
     max_acc=acc
     
 
@@ -125,6 +148,10 @@ print("Validation Set Details for ADAM")
 print("Accuracy : {}".format(val_acc(adamNetwork,val_loader)))
 print("Validation Set Details for SGD")
 print("Accuracy : {}".format(val_acc(sgdNetwork,val_loader)))
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61aa876edf9930cb203d35d4796eb030a1798a81
 
 fig = plt.figure()
 plt.plot(adam_counter, adam_losses, color='blue')
