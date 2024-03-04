@@ -79,11 +79,11 @@ class BertLayer(nn.Module):
         return layer_output
 
 class BertModel(nn.Module):
-    def __init__(self, num_layers, hidden_size, num_attention_heads, intermediate_size, vocab_size,num_classes, dropout=0.1 ):
+    def __init__(self, num_layers, hidden_size, num_attention_heads, intermediate_size, vocab_size,num_classes,device, dropout=0.1 ,):
         super(BertModel, self).__init__()
         self.classifier = Linear(hidden_size, num_classes)
         self.embedding = nn.Embedding(vocab_size, hidden_size)
-        self.positional_encoding = self._generate_positional_encoding(hidden_size)
+        self.positional_encoding = self._generate_positional_encoding(hidden_size).to(device)
         
         self.layers = nn.ModuleList([BertLayer(hidden_size, num_attention_heads, intermediate_size,dropout)
                                      for _ in range(num_layers)])

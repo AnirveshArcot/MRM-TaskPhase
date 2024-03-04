@@ -75,7 +75,7 @@ def train_model(config):
     learning_rate = config['learning_rate']
     epochs = config['epochs']
     device = torch.device(config['device'] if torch.cuda.is_available() else 'cpu')
-    model = BertModel(num_layers, hidden_size, num_attention_heads, intermediate_size, num_embeddings,num_classes,dropout)
+    model = BertModel(num_layers, hidden_size, num_attention_heads, intermediate_size, num_embeddings,num_classes,device,dropout)
     optimizer = optim.AdamW(model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
     sentences = df['v2'].tolist()
