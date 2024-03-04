@@ -29,16 +29,12 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
             optimizer.zero_grad()
 
             outputs = model(input_ids, attention_mask=attention_mask)
-            print([outputs,labels])
             loss = criterion(outputs, labels)
 
             loss.backward()
             optimizer.step()
-
             running_loss += loss.item()
-
             _, predicted = torch.max(outputs, 1)
-            print([predicted,labels])
             correct_predictions += (predicted == labels).sum().item()
             total_predictions += labels.size(0)
 
