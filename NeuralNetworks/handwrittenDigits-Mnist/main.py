@@ -11,13 +11,13 @@ network = Net()
 model_path = './results/sgdmodel.pth'
 network_state_dict = torch.load(model_path)
 network.load_state_dict(network_state_dict)
-hsv_value = np.load('hsv_value_final.npy')
+hsv_value = np.load('hsv_value.npy')
 print(hsv_value)
 cap = cv2.VideoCapture(0)
 cap.set(3, 1280)
 cap.set(4, 720)
 kernel = np.ones((5, 5), np.int8)
-noise_thresh = 1500
+noise_thresh = 800
 show_labels=False
 while True:
     _, frame = cap.read()
@@ -26,8 +26,16 @@ while True:
     lower_range = hsv_value[0]
     upper_range = hsv_value[1]
     mask = cv2.inRange(frame, lower_range, upper_range)
+    cv2.imshow("",mask)
+
+
+
+
+
+    
     mask = cv2.erode(mask, kernel, iterations=1)
-    mask = cv2.dilate(mask, kernel, iterations=2)
+    mask = cv2.dilate(mask, kernel, iterations=1)
+    
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for contour in contours:
         if cv2.contourArea(contour) > noise_thresh:
