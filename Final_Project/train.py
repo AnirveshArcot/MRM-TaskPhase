@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds_dir', type=str, required=False, default='./Files/spam.csv')
-    parser.add_argument('--batch_size', type=int, default=4)
+    parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--num_layers', type=int, default=12)
     parser.add_argument('--hidden_size', type=int, default=768)
     parser.add_argument('--num_attention_heads', type=int, default=12)

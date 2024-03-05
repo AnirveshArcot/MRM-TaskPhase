@@ -35,6 +35,8 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
             optimizer.step()
             running_loss += loss.item()
             _, predicted = torch.max(outputs, 1)
+            print(predicted)
+            print(labels)
             correct_predictions += (predicted == labels).sum().item()
             total_predictions += labels.size(0)
 
@@ -60,6 +62,15 @@ def train_model(config):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     absolute_path = os.path.join(script_dir, '..', config['ds_dir'])
     df = pd.read_csv(absolute_path)
+    df['v1'] = df['v1'].replace({'ham': 0, 'spam': 1})
+    class_0_count = (df['v1'] == 0).sum()
+    class_1_count = (df['v1'] == 1).sum()
+    if class_0_count > class_1_count:
+        class_0_indices = df[df['v1'] == 0].sample(n=class_0_count-class_1_count).index
+        df = df.drop(class_0_indices)
+    elif class_1_count > class_0_count:
+        class_1_indices = df[df['v1'] == 1].sample(n=class_1_count-class_0_count).index
+        df = df.drop(class_1_indices)
     batch_size = config['batch_size']
     num_layers = config['num_layers']
     hidden_size = config['hidden_size']
@@ -73,10 +84,9 @@ def train_model(config):
     device = torch.device(config['device'] if torch.cuda.is_available() else 'cpu')
     model = BertModel(num_layers, hidden_size, num_attention_heads, intermediate_size, num_embeddings,num_classes,device,dropout)
     optimizer = optim.AdamW(model.parameters(), lr=learning_rate)
-    criterion = nn.NLLLoss()
+    criterion = nn.CrossEntropyLoss()
     sentences = df['v2'].tolist()
     labels = df['v1'].tolist()
-    labels = [1 if label == 'spam' else 0 for label in labels]
     train_dataloader ,test_dataloader,val_dataloader = createSplit(sentences,labels,batch_size)
     model.to(device)
     train(model=model, train_dataloader=train_dataloader, val_dataloader=val_dataloader,optimizer=optimizer, criterion=criterion, epochs=epochs, device=device)

@@ -42,8 +42,7 @@ class MultiheadAttention(nn.Module):
         scores = torch.matmul(query, key.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.head_dim, dtype=torch.float32))
         if key_padding_mask is not None:
             scores = scores.masked_fill(key_padding_mask == 0, float('-inf'))
-        attn_weights = F.softmax(scores, dim=-1)
-        
+        attn_weights = F.softmax(scores - scores.max(dim=-1, keepdim=True).values, dim=-1)
         attn_weights = self.dropout(attn_weights)
         
         attended_values = torch.matmul(attn_weights, value)
@@ -70,7 +69,7 @@ class BertLayer(nn.Module):
         attention_mask=attention_mask.T
         attention_output, _ = self.attention(input_tensor, input_tensor, input_tensor, key_padding_mask=attention_mask)
         attention_output = self.dropout(attention_output)
-        attention_output = self.attention_layer_norm(attention_output + input_tensor)
+        attention_output = self.attention_layer_norm(attention_output)+input_tensor
         intermediate_output = self.intermediate(attention_output)
         intermediate_output = self.intermediate_activation(intermediate_output)
         layer_output = self.output(intermediate_output)
@@ -99,11 +98,11 @@ class BertModel(nn.Module):
 
     def forward(self, input_ids, attention_mask=None):
         input_embeddings = self.embedding(input_ids) + self.positional_encoding[:, :input_ids.size(1), :]
+        input_embeddings = F.layer_norm(input_embeddings, input_embeddings.size()[1:])
         for layer in self.layers:
             input_embeddings = layer(input_embeddings, attention_mask)
         hidden_states = input_embeddings
         cls_output = hidden_states[:, 0, :]
         logits = self.classifier(cls_output)
-        probabilities = F.softmax(logits, dim=1)
-        return probabilities
+        return logits
 
