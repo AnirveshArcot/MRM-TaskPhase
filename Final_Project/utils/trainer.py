@@ -73,7 +73,7 @@ def train_model(config):
     device = torch.device(config['device'] if torch.cuda.is_available() else 'cpu')
     model = BertModel(num_layers, hidden_size, num_attention_heads, intermediate_size, num_embeddings,num_classes,device,dropout)
     optimizer = optim.AdamW(model.parameters(), lr=learning_rate)
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.NLLLoss()
     sentences = df['v2'].tolist()
     labels = df['v1'].tolist()
     labels = [1 if label == 'spam' else 0 for label in labels]
