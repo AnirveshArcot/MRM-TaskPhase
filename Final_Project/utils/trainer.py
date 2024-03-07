@@ -33,6 +33,7 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
 
             loss.backward()
             optimizer.step()
+            optimizer.zero_grad(set_to_none=True)
             running_loss += loss.item()
             _, predicted = torch.max(outputs, 1)
             correct_predictions += (predicted == labels).sum().item()
