@@ -104,5 +104,6 @@ class BertModel(nn.Module):
         hidden_states = input_embeddings
         cls_output = hidden_states[:, 0, :]
         logits = self.classifier(cls_output)
-        return logits
+        probabilities = F.softmax(logits, dim=1)
+        return probabilities    
 

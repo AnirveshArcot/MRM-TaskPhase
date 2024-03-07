@@ -38,7 +38,7 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
             correct_predictions += (predicted == labels).sum().item()
             total_predictions += labels.size(0)
 
-            train_dataloader.set_postfix({'loss': running_loss / (train_dataloader.n + 1)})  # Update the progress bar with current loss
+            train_dataloader.set_postfix({'loss': loss.item()})  # Update the progress bar with current loss
 
         epoch_loss = running_loss / len(train_dataloader)
         epoch_accuracy = correct_predictions / total_predictions * 100.0
