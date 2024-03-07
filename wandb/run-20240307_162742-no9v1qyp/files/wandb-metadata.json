@@ -1,0 +1,53 @@
+{
+    "os": "Windows-10-10.0.22621-SP0",
+    "python": "3.11.3",
+    "heartbeatAt": "2024-03-07T10:57:44.105799",
+    "startedAt": "2024-03-07T10:57:42.564466",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "c:\\Users\\arcot\\OneDrive\\Desktop\\MRM-TaskPhase\\Final_Project\\train.py",
+    "codePathLocal": "Final_Project\\train.py",
+    "codePath": "Final_Project\\train.py",
+    "git": {
+        "remote": "https://github.com/AnirveshArcot/MRM-TaskPhase.git",
+        "commit": "9b2872619feb78317374d96c1de26a13906b9ab5"
+    },
+    "email": "arcotanirvesh@gmail.com",
+    "root": "C:/Users/arcot/OneDrive/Desktop/MRM-TaskPhase",
+    "host": "Anirvesh_G15",
+    "username": "arcot",
+    "executable": "C:\\Users\\arcot\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2611.0,
+        "min": 0.0,
+        "max": 2611.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2611.0,
+            "min": 0.0,
+            "max": 2611.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 217.24023056030273,
+            "used": 208.44109725952148
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3050 Laptop GPU",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 15.73318862915039
+    }
+}

@@ -103,7 +103,8 @@ class BertModel(nn.Module):
             input_embeddings = layer(input_embeddings, attention_mask)
         hidden_states = input_embeddings
         cls_output = hidden_states[:, 0, :]
-        logits = self.classifier(cls_output)
+        avg_hidden_states = torch.mean(hidden_states, dim=1)
+        logits = self.classifier(avg_hidden_states)
         probabilities = F.softmax(logits, dim=1)
         return probabilities    
 

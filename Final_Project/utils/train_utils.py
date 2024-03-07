@@ -22,7 +22,6 @@ def validate(model, dataloader, device):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
             labels = batch["labels"].to(device)
-
             outputs = model(input_ids, attention_mask=attention_mask)
             logits = outputs
             _, predicted = torch.max(logits, 1)

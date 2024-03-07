@@ -29,7 +29,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_embeddings', type=int, default=30522)
     parser.add_argument('--dropout', type=float, default=0.1)
     parser.add_argument('--num_classes', type=int, default=2)
-    parser.add_argument('--learning_rate', type=float, default=2e-4)
+    parser.add_argument('--learning_rate', type=float, default=2e-9)
     parser.add_argument('--epochs', type=int, default=12)
     parser.add_argument('--device', type=str, required=False, default='cuda')
     arguments = parser.parse_args()

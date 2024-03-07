@@ -11,10 +11,10 @@ import wandb
 
 def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs, device, save_path="best_model_weights.pth"):
     # Initialize wandb
-    wandb.init(
-    project="my-awesome-project",
+#     wandb.init(
+#     project="my-awesome-project",
 
-)
+# )
     
     best_val_accuracy = 0.0
     model.train()
@@ -33,10 +33,9 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
             labels = batch["labels"].to(device)
 
             optimizer.zero_grad()
-
+            
             outputs = model(input_ids, attention_mask=attention_mask)
-            loss = criterion(outputs, labels)
-
+            loss = criterion(outputs, labels)          
             loss.backward()
             optimizer.step()
             optimizer.zero_grad(set_to_none=True)
@@ -55,9 +54,9 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
         val_accuracy = validate(model, val_dataloader, device)
         
         # Log metrics to wandb
-        wandb.log({"epoch": epoch + 1, "train_loss": epoch_loss, "train_accuracy": epoch_accuracy, "val_accuracy": val_accuracy})
+        # wandb.log({"epoch": epoch + 1, "train_loss": epoch_loss, "train_accuracy": epoch_accuracy, "val_accuracy": val_accuracy})
 
-        if val_accuracy > best_val_accuracy:
+        if val_accuracy >= best_val_accuracy:
             best_val_accuracy = val_accuracy
             torch.save(model.state_dict(), save_path)
             print("Model weights saved.")
@@ -71,6 +70,14 @@ def train_model(config):
     absolute_path = os.path.join(script_dir, '..', config['ds_dir'])
     df = pd.read_csv(absolute_path)
     df['v1'] = df['v1'].replace({'ham': 0, 'spam': 1})
+    class_0_count = (df['v1'] == 0).sum()
+    class_1_count = (df['v1'] == 1).sum()
+    if class_0_count > class_1_count:
+        class_0_indices = df[df['v1'] == 0].sample(n=class_0_count-class_1_count).index
+        df = df.drop(class_0_indices)
+    elif class_1_count > class_0_count:
+        class_1_indices = df[df['v1'] == 1].sample(n=class_1_count-class_0_count).index
+        df = df.drop(class_1_indices)
     batch_size = config['batch_size']
     num_layers = config['num_layers']
     hidden_size = config['hidden_size']
