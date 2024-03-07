@@ -1,0 +1,32 @@
+Epoch 1/12:   0%|                                                                                                                                                        | 0/3565 [00:00<?, ?it/s]c:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\Final_Project\utils\dataloader.py:30: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  attention_mask = torch.tensor(attention_mask_flattened, dtype=torch.float)
+
+
+
+
+
+
+
+Epoch 1/12:   1%|▋                                                                                                                                  | 20/3565 [00:19<57:50,  1.02it/s, loss=0.313]
+Traceback (most recent call last):
+  File "c:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\Final_Project\train.py", line 36, in <module>
+    main(arguments)
+  File "c:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\Final_Project\train.py", line 18, in main
+    train_model(config)
+  File "c:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\Final_Project\utils\trainer.py", line 92, in train_model
+    train(model=model, train_dataloader=train_dataloader, val_dataloader=val_dataloader,optimizer=optimizer, criterion=criterion, epochs=epochs, device=device)
+  File "c:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\Final_Project\utils\trainer.py", line 41, in train
+    optimizer.step()
+  File "C:\Users\arcot\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\optim\optimizer.py", line 373, in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\arcot\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\optim\optimizer.py", line 76, in _use_grad
+    ret = func(self, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\arcot\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\optim\adamw.py", line 184, in step
+    adamw(
+  File "C:\Users\arcot\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\optim\adamw.py", line 335, in adamw
+    func(
+  File "C:\Users\arcot\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\optim\adamw.py", line 412, in _single_tensor_adamw
+    exp_avg.lerp_(grad, 1 - beta1)
+KeyboardInterrupt

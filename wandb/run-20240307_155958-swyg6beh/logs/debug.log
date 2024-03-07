@@ -1,0 +1,28 @@
+2024-03-07 15:59:58,220 INFO    MainThread:21584 [wandb_setup.py:_flush():76] Current SDK version is 0.16.4
+2024-03-07 15:59:58,220 INFO    MainThread:21584 [wandb_setup.py:_flush():76] Configure stats pid to 21584
+2024-03-07 15:59:58,220 INFO    MainThread:21584 [wandb_setup.py:_flush():76] Loading settings from C:\Users\arcot\.config\wandb\settings
+2024-03-07 15:59:58,220 INFO    MainThread:21584 [wandb_setup.py:_flush():76] Loading settings from C:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\wandb\settings
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'Final_Project\\train.py', 'program_abspath': 'c:\\Users\\arcot\\OneDrive\\Desktop\\MRM-TaskPhase\\Final_Project\\train.py', 'program': 'c:\\Users\\arcot\\OneDrive\\Desktop\\MRM-TaskPhase\\Final_Project\\train.py'}
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_init.py:_log_setup():526] Logging user logs to C:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\wandb\run-20240307_155958-swyg6beh\logs\debug.log
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_init.py:_log_setup():527] Logging internal logs to C:\Users\arcot\OneDrive\Desktop\MRM-TaskPhase\wandb\run-20240307_155958-swyg6beh\logs\debug-internal.log
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_init.py:init():566] calling init triggers
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_init.py:init():573] wandb.init called with sweep_config: {}
+config: {}
+2024-03-07 15:59:58,221 INFO    MainThread:21584 [wandb_init.py:init():616] starting backend
+2024-03-07 15:59:58,222 INFO    MainThread:21584 [wandb_init.py:init():620] setting up manager
+2024-03-07 15:59:58,360 INFO    MainThread:21584 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2024-03-07 15:59:58,362 INFO    MainThread:21584 [wandb_init.py:init():628] backend started and connected
+2024-03-07 15:59:58,632 INFO    MainThread:21584 [wandb_init.py:init():720] updated telemetry
+2024-03-07 15:59:58,669 INFO    MainThread:21584 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-03-07 15:59:59,350 ERROR   MainThread:21584 [wandb_init.py:init():779] encountered error: It appears that you do not have permission to access the requested resource. Please reach out to the project owner to grant you access. If you have the correct permissions, verify that there are no issues with your networking setup.(Error 404: Not Found)
+2024-03-07 15:59:59,570 ERROR   MainThread:21584 [wandb_init.py:init():1194] It appears that you do not have permission to access the requested resource. Please reach out to the project owner to grant you access. If you have the correct permissions, verify that there are no issues with your networking setup.(Error 404: Not Found)
+Traceback (most recent call last):
+  File "C:\Users\arcot\AppData\Local\Programs\Python\Python311\Lib\site-packages\wandb\sdk\wandb_init.py", line 1176, in init
+    run = wi.init()
+          ^^^^^^^^^
+  File "C:\Users\arcot\AppData\Local\Programs\Python\Python311\Lib\site-packages\wandb\sdk\wandb_init.py", line 785, in init
+    raise error
+wandb.errors.CommError: It appears that you do not have permission to access the requested resource. Please reach out to the project owner to grant you access. If you have the correct permissions, verify that there are no issues with your networking setup.(Error 404: Not Found)
+2024-03-07 16:00:00,587 WARNING MsgRouterThr:21584 [router.py:message_loop():77] message_loop has been closed

@@ -7,10 +7,16 @@ import torch.optim as optim
 from utils.train_utils import createSplit,validate
 from tqdm import tqdm
 from utils.inference import inference
+import wandb
 
 def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs, device, save_path="best_model_weights.pth"):
-    best_val_accuracy = 0.0
+    # Initialize wandb
+    wandb.init(
+    project="my-awesome-project",
 
+)
+    
+    best_val_accuracy = 0.0
     model.train()
 
     for epoch in range(epochs):
@@ -48,6 +54,9 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
         # Validation
         val_accuracy = validate(model, val_dataloader, device)
         
+        # Log metrics to wandb
+        wandb.log({"epoch": epoch + 1, "train_loss": epoch_loss, "train_accuracy": epoch_accuracy, "val_accuracy": val_accuracy})
+
         if val_accuracy > best_val_accuracy:
             best_val_accuracy = val_accuracy
             torch.save(model.state_dict(), save_path)
