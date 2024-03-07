@@ -2,7 +2,7 @@ import torch
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 def test(model, test_dataloader, device):
-    model.load_state_dict(torch.load('best_model_weights.pth'))
+    model.load_state_dict(torch.load('last_model_weights.pth'))
     model.eval()  # Set the model to evaluation mode
     predictions = []
     

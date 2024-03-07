@@ -61,6 +61,8 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, epochs,
             torch.save(model.state_dict(), save_path)
             print("Model weights saved.")
         print(f'Validation Accuracy: {val_accuracy:.2f}%')
+    torch.save(model.state_dict(), 'last_model_weights.pth')
+    
 
 
 
