@@ -61,14 +61,6 @@ def train_model(config):
     absolute_path = os.path.join(script_dir, '..', config['ds_dir'])
     df = pd.read_csv(absolute_path)
     df['v1'] = df['v1'].replace({'ham': 0, 'spam': 1})
-    class_0_count = (df['v1'] == 0).sum()
-    class_1_count = (df['v1'] == 1).sum()
-    if class_0_count > class_1_count:
-        class_0_indices = df[df['v1'] == 0].sample(n=class_0_count-class_1_count).index
-        df = df.drop(class_0_indices)
-    elif class_1_count > class_0_count:
-        class_1_indices = df[df['v1'] == 1].sample(n=class_1_count-class_0_count).index
-        df = df.drop(class_1_indices)
     batch_size = config['batch_size']
     num_layers = config['num_layers']
     hidden_size = config['hidden_size']
