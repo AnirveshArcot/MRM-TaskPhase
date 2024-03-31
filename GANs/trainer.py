@@ -15,6 +15,7 @@ def train(train_dataset,val_dataset,test_dataset, num_epochs,device,lr):
     discriminator = Discriminator().to(device)
     optimizer_G = optim.Adam(generator.parameters(), lr=lr)
     optimizer_D = optim.Adam(discriminator.parameters(), lr=lr)
+    best_val_loss=float('inf')
     for epoch in range(num_epochs):
         for i, (hr_imgs, lr_imgs) in enumerate(tqdm(train_dataset, desc=f"Epoch {epoch+1}/{num_epochs}")):
             valid = torch.ones(hr_imgs.size(0), 1).to(device)
@@ -34,6 +35,12 @@ def train(train_dataset,val_dataset,test_dataset, num_epochs,device,lr):
             optimizer_D.step()
         val_loss = validate(generator, pixelwise_loss, val_dataset,device=device)
         test_output(generator, val_dataset,device=device)
+        if best_val_loss >= val_loss:
+            best_val_loss = val_loss
+            torch.save(generator.state_dict(),'best_model_weights.pth')
+            print("Model weights saved.")
+        print(f'Validation Accuracy: {val_loss:.2f}%')
+        torch.save(generator.state_dict(), 'last_model_weights.pth')
 
 
 

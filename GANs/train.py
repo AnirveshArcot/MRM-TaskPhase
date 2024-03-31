@@ -16,9 +16,9 @@ def main(args):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--learning_rate', type=float, default=2e-9)
-    parser.add_argument('--epochs', type=int, default=12)
-    parser.add_argument('--resize_dim', type=int, default=128)
+    parser.add_argument('--learning_rate', type=float, default=1e-3)
+    parser.add_argument('--epochs', type=int, default=1)
+    parser.add_argument('--resize_dim', type=int, default=256)
     parser.add_argument('--upscale_factor', type=int, default=4)
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--device', type=str, required=False, default='cuda')
