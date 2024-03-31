@@ -27,7 +27,7 @@ class ResidualBlock(nn.Module):
 
 
 class Generator(nn.Module):
-    def __init__(self, upscale_factor, num_residual_blocks=16):
+    def __init__(self, num_residual_blocks=16):
         super(Generator, self).__init__()
         self.conv1 = nn.Conv2d(3, 64, kernel_size=9, stride=1, padding=4)
         self.prelu = nn.PReLU()

@@ -22,7 +22,8 @@ def validate(generator, pixelwise_loss, val_dataset, device):
 
 
 def test_output(generator,val_dataset,device):
-    generator.eval()  # Set the generator to evaluation mode
+    
+    generator.eval()
     with torch.no_grad():
         for hr_imgs, lr_imgs in val_dataset:
             hr_imgs, lr_imgs = hr_imgs.to(device), lr_imgs.to(device)
