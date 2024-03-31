@@ -27,9 +27,9 @@ def test_output(generator,val_dataset,device):
         for hr_imgs, lr_imgs in val_dataset:
             hr_imgs, lr_imgs = hr_imgs.to(device), lr_imgs.to(device)
             gen_hr_imgs = generator(lr_imgs)
-            lr_image_test=lr_image_test.cpu()
-            lr_image_test=lr_image_test.numpy()
             lr_image_test = lr_imgs[0].squeeze().permute(1, 2, 0)
+            lr_image_test=lr_image_test.cpu()
+            lr_image_test.numpy()
             hr_image_test=hr_image_test.cpu()
             hr_image_test=hr_image_test.numpy()
             hr_image_test = gen_hr_imgs[0].squeeze().permute(1, 2, 0) 
