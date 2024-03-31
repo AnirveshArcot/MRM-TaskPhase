@@ -11,14 +11,14 @@ import os
 def train(train_dataset,val_dataset,test_dataset, num_epochs,device,lr):
     adversarial_loss = nn.BCELoss()
     pixelwise_loss = nn.MSELoss()
-    generator = Generator(upscale_factor=8)
-    discriminator = Discriminator()
+    generator = Generator(upscale_factor=8).to(device)
+    discriminator = Discriminator().to(device)
     optimizer_G = optim.Adam(generator.parameters(), lr=lr)
     optimizer_D = optim.Adam(discriminator.parameters(), lr=lr)
     for epoch in range(num_epochs):
         for i, (hr_imgs, lr_imgs) in enumerate(tqdm(train_dataset, desc=f"Epoch {epoch+1}/{num_epochs}")):
-            valid = torch.ones(hr_imgs.size(0), 1)
-            fake = torch.zeros(hr_imgs.size(0), 1)
+            valid = torch.ones(hr_imgs.size(0), 1).to(device)
+            fake = torch.zeros(hr_imgs.size(0), 1).to(device)
             hr_imgs, lr_imgs = hr_imgs.to(device), lr_imgs.to(device)
             optimizer_G.zero_grad()
             gen_hr_imgs = generator(lr_imgs)
