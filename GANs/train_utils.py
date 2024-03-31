@@ -32,10 +32,10 @@ def test_output(generator,val_dataset,device):
             hr_image_test = (hr_image_test - hr_image_test.min()) / (hr_image_test.max() - hr_image_test.min())
             plt.figure()
             plt.subplot(1, 2, 1)
-            plt.imshow(lr_image_test)
+            plt.imshow(lr_image_test.cpu())
             plt.title('Low Resolution')
             plt.subplot(1, 2, 2)
-            plt.imshow(hr_image_test)
+            plt.imshow(hr_image_test.cpu())
             plt.title('High Resolution')
             plt.show()
             break
