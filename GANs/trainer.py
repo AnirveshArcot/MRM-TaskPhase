@@ -11,8 +11,8 @@ import os
 def train(train_dataset,val_dataset,test_dataset, num_epochs,device,lr):
     adversarial_loss = nn.BCELoss()
     pixelwise_loss = nn.MSELoss()
-    generator = Generator(upscale_factor=8).to(device)
-    discriminator = Discriminator().to(device)
+    generator = Generator(upscale_factor=8)
+    discriminator = Discriminator()
     optimizer_G = optim.Adam(generator.parameters(), lr=lr)
     optimizer_D = optim.Adam(discriminator.parameters(), lr=lr)
     for epoch in range(num_epochs):
