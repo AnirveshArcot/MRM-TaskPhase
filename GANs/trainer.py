@@ -9,10 +9,10 @@ from train_utils import test_output, validate
 import os
 
 
-def train(train_dataset,val_dataset,num_epochs,device,lr):
+def train(train_dataset,val_dataset,num_epochs,device,lr,num_residual_blocks):
     adversarial_loss = nn.BCELoss()
     pixelwise_loss = nn.MSELoss()
-    generator = Generator().to(device)
+    generator = Generator(num_residual_blocks=num_residual_blocks).to(device)
     discriminator = Discriminator().to(device)
     optimizer_G = optim.Adam(generator.parameters(), lr=lr)
     optimizer_D = optim.Adam(discriminator.parameters(), lr=lr)
@@ -63,7 +63,7 @@ def train_model(config):
     absolute_valid_path = os.path.normpath(os.path.join(script_dir,config['val_path']))
     if(mode=='train'):
         train_dataset, val_dataset = getTrainDatasets(root_dir=absolute_train_path,batch_size=batch_size,resize_dim=resize_dim,upscale_factor=upscale_factor)
-        train(train_dataset,val_dataset,num_epochs,device,lr)
+        train(train_dataset,val_dataset,num_epochs,device,lr,num_residual_blocks=num_residual_blocks)
     if(mode=='test'):
         test_dataset= getTestDataset(root_dir=absolute_valid_path,batch_size=batch_size,resize_dim=resize_dim,upscale_factor=upscale_factor)
         generator = Generator(num_residual_blocks=num_residual_blocks).to(device)
