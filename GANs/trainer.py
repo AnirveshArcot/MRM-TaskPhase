@@ -33,7 +33,7 @@ def train(train_dataset,val_dataset,num_epochs,device,lr,num_residual_blocks,ups
             optimizer_D.zero_grad()
             real_loss = adversarial_loss(discriminator(hr_imgs), valid)
             fake_loss = adversarial_loss(discriminator(gen_hr_imgs.detach()), fake)
-            d_loss = (real_loss + fake_loss) / 2
+            d_loss = real_loss + fake_loss
             d_loss.backward()
             optimizer_D.step()
         val_loss = validate(generator, pixelwise_loss, val_dataset,device=device)
