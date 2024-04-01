@@ -27,7 +27,7 @@ class ResidualBlock(nn.Module):
 
 
 class Generator(nn.Module):
-    def __init__(self, num_residual_blocks=16):
+    def __init__(self, num_residual_blocks=16,upscale_factor=4):
         super(Generator, self).__init__()
         self.conv1 = nn.Conv2d(3, 64, kernel_size=9, stride=1, padding=4)
         self.prelu = nn.PReLU()
@@ -36,8 +36,8 @@ class Generator(nn.Module):
         self.bn = nn.BatchNorm2d(64)
         
         self.upsample = nn.Sequential(
-            nn.Conv2d(64, 256, kernel_size=3, stride=1, padding=1),
-            nn.PixelShuffle(2),
+            nn.Conv2d(64, 64 * upscale_factor ** 2, kernel_size=3, stride=1, padding=1),
+            nn.PixelShuffle(upscale_factor),
             nn.PReLU()
         )
         self.conv3 = nn.Conv2d(64, 3, kernel_size=9, stride=1, padding=4)
@@ -50,7 +50,7 @@ class Generator(nn.Module):
         out = self.bn(out2)
         out += out1
         out = self.upsample(out)
-        out = self.upsample(out)
+
         out = self.conv3(out)
         return out
 
