@@ -36,11 +36,11 @@ class Generator(nn.Module):
         self.bn = nn.BatchNorm2d(64)
         
         self.upsample = nn.Sequential(
-            nn.Conv2d(64, 64 * upscale_factor ** 2, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(64, 16 * upscale_factor ** 2, kernel_size=3, stride=1, padding=1),
             nn.PixelShuffle(upscale_factor),
             nn.PReLU()
         )
-        self.conv3 = nn.Conv2d(64, 3, kernel_size=9, stride=1, padding=4)
+        self.conv3 = nn.Conv2d(16, 3, kernel_size=9, stride=1, padding=4)
 
     def forward(self, x):
         out1 = self.conv1(x)
