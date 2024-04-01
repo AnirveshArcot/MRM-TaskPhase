@@ -19,6 +19,8 @@ def train(train_dataset,val_dataset,num_epochs,device,lr):
     best_val_loss=float('inf')
     for epoch in range(num_epochs):
         for i, (hr_imgs, lr_imgs) in enumerate(tqdm(train_dataset, desc=f"Epoch {epoch+1}/{num_epochs}")):
+            generator.train()
+            discriminator.train()
             valid = torch.ones(hr_imgs.size(0), 1).to(device)
             fake = torch.zeros(hr_imgs.size(0), 1).to(device)
             hr_imgs, lr_imgs = hr_imgs.to(device), lr_imgs.to(device)
@@ -54,6 +56,7 @@ def train_model(config):
     resize_dim=(config['resize_dim'],config['resize_dim'])
     upscale_factor=config['upscale_factor']
     mode=config['mode']
+    num_residual_blocks=config['res_block']
     device = torch.device(config['device'] if torch.cuda.is_available() else 'cpu')
     script_dir = os.path.dirname(os.path.abspath(__file__))
     absolute_train_path = os.path.normpath(os.path.join(script_dir,config['train_path']))
@@ -63,5 +66,5 @@ def train_model(config):
         train(train_dataset,val_dataset,num_epochs,device,lr)
     if(mode=='test'):
         test_dataset= getTestDataset(root_dir=absolute_valid_path,batch_size=batch_size,resize_dim=resize_dim,upscale_factor=upscale_factor)
-        generator = Generator().to(device)
+        generator = Generator(num_residual_blocks=num_residual_blocks).to(device)
         inference(generator,test_dataset,device)
