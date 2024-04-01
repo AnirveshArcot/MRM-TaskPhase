@@ -9,9 +9,9 @@ from train_utils import test_output, validate
 import os
 
 
-def train(train_dataset, val_dataset, num_epochs, device, lr, num_residual_blocks):
+def train(train_dataset, val_dataset, num_epochs, device, lr, num_residual_blocks,upscale_factor):
     pixelwise_loss = nn.MSELoss()
-    generator = Generator(num_residual_blocks=num_residual_blocks).to(device)
+    generator = Generator(num_residual_blocks=num_residual_blocks,upscale_factor=upscale_factor).to(device)
     optimizer_G = optim.Adam(generator.parameters(), lr=lr)
     best_val_loss = float('inf')
     for epoch in range(num_epochs):
@@ -47,9 +47,9 @@ def train_model(config):
     if mode == 'train':
         train_dataset, val_dataset = getTrainDatasets(root_dir=absolute_train_path, batch_size=batch_size,
                                                       resize_dim=resize_dim, upscale_factor=upscale_factor)
-        train(train_dataset, val_dataset, num_epochs, device, lr, num_residual_blocks=num_residual_blocks)
+        train(train_dataset, val_dataset, num_epochs, device, lr, num_residual_blocks=num_residual_blocks,upscale_factor=upscale_factor)
     if mode == 'test':
         test_dataset = getTestDataset(root_dir=absolute_valid_path, batch_size=batch_size, resize_dim=resize_dim,
                                       upscale_factor=upscale_factor)
-        generator = Generator(num_residual_blocks=num_residual_blocks).to(device)
+        generator = Generator(num_residual_blocks=num_residual_blocks,upscale_factor=upscale_factor).to(device)
         inference(generator, test_dataset, device)
