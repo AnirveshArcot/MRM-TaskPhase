@@ -7,7 +7,7 @@ import numpy as np
 def inference(generator, test_dataset, device):
     print()
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    absolute_weights_path = os.path.normpath(os.path.join(script_dir, "./best_model_weights.pth"))
+    absolute_weights_path = os.path.normpath(os.path.join(script_dir, "../best_model_weights.pth"))
     weights = torch.load(absolute_weights_path, map_location=torch.device(device))
     generator.load_state_dict(weights)
     generator.eval()
