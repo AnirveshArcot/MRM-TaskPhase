@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from inference import inference
-from model import Generator,Discriminator
-from dataset import getTrainDatasets ,getTestDataset
+from utils.inference import inferencer
+from utils.model import Generator,Discriminator
+from utils.dataset import getTrainDatasets ,getTestDataset
 from tqdm import tqdm
-from train_utils import test_output, validate
+from utils.train_utils import test_output, validate
 import os
 
 
@@ -66,4 +66,4 @@ def train_model(config):
     if(mode=='test'):
         test_dataset= getTestDataset(root_dir=absolute_valid_path,batch_size=batch_size,resize_dim=resize_dim,upscale_factor=upscale_factor)
         generator = Generator(num_residual_blocks=num_residual_blocks,upscale_factor=upscale_factor).to(device)
-        inference(generator,test_dataset,device)
+        inferencer(generator,test_dataset,device)

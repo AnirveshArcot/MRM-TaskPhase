@@ -69,10 +69,11 @@ class HighLowResDatasetTrain(Dataset):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img_high_res = cv2.resize(img, self.resize_dim)
         img_low_res = cv2.resize(img, (self.resize_dim[0] // self.upscale_factor, self.resize_dim[1] // self.upscale_factor))
+        # img_low_res=self.transform_low_res(img_low_res)
+        # img_high_res=self.transform_high_res(img_high_res)
         img_high_res = self.transform(img_high_res)
         img_low_res = self.transform(img_low_res)
-        img_low_res=self.transform_low_res(img_low_res)
-        img_high_res=self.transform_high_res(img_high_res)
+
         return img_high_res,img_low_res
     
 
